@@ -100,8 +100,8 @@ Create a .env file at the root
 GEMINI_API_KEY="your_api_key_here"
 OPENAI_API_KEY="your_api_key_here"
 ```
-👉 Refer to ```text.env.example```
-👉 **Never commit** ```text.env``` **to GitHub**
+👉 Refer to ```.env.example```
+👉 **Never commit** ```.env``` **to GitHub**
 
 ---
 ## ▶️ How to Run Experiments

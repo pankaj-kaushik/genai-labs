@@ -33,6 +33,7 @@ genai-labs/
 ├── .env.example
 ├── .gitignore
 └── README.md
+```
 
 **Each experiment:**
 - is self-contained

@@ -24,7 +24,7 @@ genai-labs/
 │   │   └── README.md
 │   │
 │   ├── chat-with-pdf/
-│   │   ├── app.py
+│   │   ├── main.py
 │   │   ├── requirements.txt
 │   │   └── README.md
 │   │
@@ -66,3 +66,16 @@ Common stack used across experiments:
 - **Language:** Python 3.10+
 - **LLMs:** Google Gemini
 - **Frameworks:** langchain
+- **Env Management:** python-dotenv
+- **IDE:** VS Code (recommended)
+
+**📌 Each experiment may use additional libraries — check its requirements.txt**
+
+---
+## ⚙️ Environment Setup (One-Time)
+
+### Step 1: Clone the Repository
+```text
+git clone https://github.com/your-username/genai-labs.git
+cd genai-labs
+```

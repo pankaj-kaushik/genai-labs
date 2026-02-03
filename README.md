@@ -34,7 +34,3 @@ Each experiment in this repo focuses on **one core idea**, explained through **w
 
 > ⚠️ Note: These are **labs & experiments**, not production-ready systems.  
 > Mature projects may later be moved into their **own dedicated repositories**.
-
----
-
-## 📁 Repository Structure

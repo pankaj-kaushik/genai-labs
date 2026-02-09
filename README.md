@@ -8,7 +8,7 @@ This repository contains **small, focused GenAI experiments**, each living in it
 - explore real-world GenAI use cases
 - build intuition before production-grade systems
 
-> ⚠️ This repo is **not production-ready**. The goal is learning by building.
+⚠️ This repo is **not production-ready**. The goal is learning by building.
 
 ---
 

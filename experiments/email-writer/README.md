@@ -103,7 +103,7 @@ user_prompt = f"""
 
 ### Structured Prompting
 In `create_email_prompt()` method we passed the instruction in `user_prompt` that dictate the organization of the input and the exact layout of the output.
-Instead of writing a long, conversational sentence, you used **labels** and **delimiters** to organize the information.
+Instead of writing a long, conversational sentence, we used **labels** and **delimiters** to organize the information.
 
 - **Input Structuring:** Using headers like KEY POINTS TO INCLUDE: helps the AI distinguish between the "context" (who the email is for) and the "content" (what must be said).
 
@@ -129,7 +129,7 @@ user_prompt = f"""
 ```
 ### Role Prompting
 In `generate_email()` method, we passed the `system_instruction` parameter in the configuration which ensures the AI stays in **specialist** mode or role regardless of the query.
-Instead of just asking for an email, you are explicitly telling the AI to act as a specific professional (a "corporate communications specialist"). This sets the "mental" framework for the AI, influencing its vocabulary, level of formality, and overall perspective before it even looks at your specific email details.
+Instead of just asking for an email, we are explicitly telling the AI to act as a specific professional (a "helpful assistant"). This sets the "mental" framework for the AI, influencing its vocabulary, level of formality, and overall perspective before it even looks at your specific email details.
 
 ```python
 system_instructions = "You are a helpful assistant that writes emails and messages."

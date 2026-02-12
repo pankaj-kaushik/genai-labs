@@ -1,23 +1,35 @@
 """
-Email Writer - An AI-Powered Email and Message Generation Assistant
+Email Writer - AI Email and Message Generation Assistant
 
-This module provides an interactive way to generate professional and personalized
-emails and messages using Google's Gemini API. It helps users create well-crafted
-communications tailored to specific purposes, tones, and recipients.
+This module provides an interactive CLI to generate professional and
+personalized emails and messages using Google's Gemini API. It reads
+configuration from a local `.env` file (via `python-dotenv`) and expects
+the GEMINI_API_KEY to be available in the environment when creating the
+GenAI client.
 
 Usage:
     python main.py
-    
+
 Requirements:
     - google-genai library
     - python-dotenv library
-    - GEMINI_API_KEY environment variable
+    - GEMINI_API_KEY environment variable (or set in a .env file)
+
+Notes:
+    - The code uses the `TARGET_MODEL` constant to select the Gemini model.
+    - Errors from the GenAI client are caught and returned as strings by
+      the helper functions so the CLI remains interactive-friendly.
 """
 
 import os
 from dotenv import load_dotenv
 from google import genai
 
+# Load environment variables from .env file
+load_dotenv()
+
+# Constants
+TARGET_MODEL = "gemini-3-flash-preview"
 
 def create_genai_client():
     """
@@ -43,18 +55,25 @@ def create_email_prompt(purpose, tone, recipient, key_points):
         purpose (str): The main purpose or intent of the email.
         tone (str): The desired tone (e.g., formal, casual, enthusiastic).
         recipient (str): Description of the recipient or recipient type.
-        key_points (str): Key points to include in the email.
-        
+        key_points (str): Key points to include in the email (comma-separated
+            or a short text block). The function does not parse this string;
+            it is included verbatim in the prompt.
+
     Returns:
-        str: A formatted prompt string with instructions for the AI model.
+        str: A formatted prompt string with clear instructions for the AI model
+             including the requested response format (Subject/Body).
     """
     # We use a system-style prompt to guide Gemini's behavior
-    prompt = f"""
-    You are an expert Email and Message Writer.
-    1. Write an email or message with the following purpose: '{purpose}'.
-    2. Use a '{tone}' tone appropriate for the recipient: '{recipient}'.
-    3. Include the following key points: {key_points}.
-    4. Ensure the email/message is clear, concise, and engaging.
+    user_prompt = f"""
+    Write a {tone} email/message to {recipient} regarding '{purpose}'.
+    Key points to include: 
+    {key_points}.
+    
+    RESPONSE FORMAT:
+    Please provide the response in the following format:
+    Subject: [Subject Line]
+    Body: [Email Body]
+
     Guidelines
     - Keep language natural and human-like
     - Maintain clarity and professionalism
@@ -62,36 +81,15 @@ def create_email_prompt(purpose, tone, recipient, key_points):
     - Keep it concise but complete
     Generate only the final email/message. 
     """
-    return prompt
-
-def initialize_environment():
-    """
-    Initializes the application environment.
-    
-    This function:
-    1. Loads environment variables from a .env file using python-dotenv
-    2. Verifies that the GEMINI_API_KEY is available
-    3. Prints the API key status for debugging purposes
-    
-    Note: In production, sensitive information like API keys should not be printed.
-    """
-    # Initialize environment variables
-    print("Loading environment variables...")
-    load_dotenv()
-
-    # The client gets the API key from the environment variable `GEMINI_API_KEY`.
-    # print("API KEY:", os.getenv("GEMINI_API_KEY"))
+    return user_prompt
 
 def get_user_input():
     """
     Collects email composition details from the user via interactive prompts.
     
     Returns:
-        tuple: A tuple containing:
-            - purpose (str): The main purpose of the email
-            - tone (str): The desired tone for the email
-            - recipient (str): Details about the recipient
-            - key_points (str): Key points to include in the email
+        tuple: A tuple containing four strings in the order:
+            (purpose, tone, recipient, key_points)
     """
     purpose = input("Enter purpose of the email or message: ")
     tone = input("Enter desired tone (e.g., formal, casual, enthusiastic): ")
@@ -109,36 +107,50 @@ def generate_email(client, prompt):
     
     Args:
         client (genai.Client): An authenticated GenAI client instance.
-        prompt (str): The formatted prompt containing purpose, tone, recipient, and key points.
-        
+        prompt (str): The formatted prompt containing purpose, tone,
+            recipient, and key points.
+
     Returns:
-        str: The AI-generated email or message content.
-             If an error occurs, returns an error message string.
+        str: The AI-generated email or message content. If an error occurs
+             while calling the API, the function catches the exception and
+             returns a human-readable error string instead of raising.
     """
     system_instructions = "You are a helpful assistant that writes emails and messages."
     try:
         response = client.models.generate_content(
-            model="gemini-3-flash-preview",  # Using the fast and capable flash model
+            model=TARGET_MODEL,
             config=genai.types.GenerateContentConfig(system_instruction=system_instructions),
             contents=prompt
         )
         return response.text
+    except AttributeError:
+        return "Error: Invalid response format from the API."
+    except ValueError as e:
+        return f"Invalid input value: {e}"
+    except ConnectionError:
+        return "Error: Failed to connect to the API. Check your internet connection."
+    except TimeoutError:
+        return "Error: Request timed out. Please try again."
     except Exception as e:
         return f"An error occurred: {e}"
 
 def main():
     """
-    Main entry point for the Email Writer application.
-    
-    This function orchestrates the email generation workflow:
-    1. Displays a welcome message
-    2. Initializes the environment and API client
-    3. Collects email specifications from the user
-    4. Generates a customized, professional email based on user input
-    5. Displays the generated email in a formatted manner
+    Main entry point for the AI Email & Message Writer application.
+    This function orchestrates the email/message generation workflow by:
+    1. Displaying a welcome message to the user
+    2. Collecting user input (purpose, tone, recipient, key_points)
+    3. Creating an email prompt based on user specifications
+    4. Initializing a GenAI client connection
+    5. Generating the email/message content using AI
+    6. Displaying the generated email/message to the user
+    The function guides the user through an interactive process to create
+    customized emails or messages with specific tone and purpose.
+    Returns:
+        None
     """
+    
     print("--- Welcome to your AI Email & Message Writer! ---")
-    initialize_environment()
     print("Please provide details for the email/message you want to create.")
     purpose, tone, recipient, key_points = get_user_input()
     print("Creating Email Prompt...")

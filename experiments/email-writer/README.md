@@ -20,13 +20,20 @@ This project is ideal for:
 - Modular and scalable architecture
 - Easy to extend with new AI capabilities
 
+## 🎯 Learning Outcomes
+- How GenAI APIs work
+- Prompt Engineering Basics
+- Secure API key handling
+- Real-world GenAI use cases
+- End-to-end AI application flow
+
 ## 🧩 Use Cases
-✅ Writing professional emails
-✅ Client communication drafts
-✅ Follow-up messages
-✅ Apology / Request emails
-✅ Personal or casual message generation
-✅ Productivity automation
+- Writing professional emails
+- Client communication drafts
+- Follow-up messages
+- Apology / Request emails
+- Personal or casual message generation
+- Productivity automation
 
 ## ⚙️ Setup Instructions
 ### Step 1: Clone the Repository
@@ -69,47 +76,101 @@ pip install -r requirements.txt
 python main.py
 ```
 
-## 🧠 Prompt Used
-```text
-You are an expert Email and Message Writer.
-1. Write an email or message with the following purpose: '{purpose}'.
-2. Use a '{tone}' tone appropriate for the recipient: '{recipient}'.
-3. Include the following key points: {key_points}.
-4. Ensure the email/message is clear, concise, and engaging.
+## 🧠 Prompt Engineering Used
+We have used following prompt techniques to ensure AI behaves reliably. Here is the breakdown.
 
-Guidelines
-- Keep language natural and human-like
-- Maintain clarity and professionalism
-- Add proper greeting and closing
-- Keep it concise but complete
-Generate only the final email/message. 
+### Zero-Shot Prompting
+In `create_email_prompt()` method we passed the instruction in `user_prompt` but didn't mention any specific examples. The code tells the AI **what** to do (write an email) and **how** to format it (Subject/Body), but it gives zero finished examples of a "good" email for the AI to copy. It relies entirely on the AI's pre-existing knowledge of what a professional email looks like.
+
+```python
+user_prompt = f"""
+    Write a {tone} email/message to {recipient} regarding '{purpose}'.
+    Key points to include: 
+    {key_points}.
+    
+    RESPONSE FORMAT:
+    Please provide the response in the following format:
+    Subject: [Subject Line]
+    Body: [Email Body]
+
+    Guidelines
+    - Keep language natural and human-like
+    - Maintain clarity and professionalism
+    - Add proper greeting and closing
+    - Keep it concise but complete
+    Generate only the final email/message.
 ```
 
+### Structured Prompting
+In `create_email_prompt()` method we passed the instruction in `user_prompt` that dictate the organization of the input and the exact layout of the output.
+Instead of writing a long, conversational sentence, you used **labels** and **delimiters** to organize the information.
+
+- **Input Structuring:** Using headers like KEY POINTS TO INCLUDE: helps the AI distinguish between the "context" (who the email is for) and the "content" (what must be said).
+
+- **Output Structuring:** The RESPONSE FORMAT: section forces the AI to follow a specific pattern (SUBJECT: followed by BODY:), making it "machine-readable" so you could easily split the text later using Python.
+
+```python
+user_prompt = f"""
+    Write a {tone} email/message to {recipient} regarding '{purpose}'.
+    Key points to include: 
+    {key_points}.
+    
+    RESPONSE FORMAT:
+    Please provide the response in the following format:
+    Subject: [Subject Line]
+    Body: [Email Body]
+
+    Guidelines
+    - Keep language natural and human-like
+    - Maintain clarity and professionalism
+    - Add proper greeting and closing
+    - Keep it concise but complete
+    Generate only the final email/message.
+```
+### Role Prompting
+In `generate_email()` method, we passed the `system_instruction` parameter in the configuration which ensures the AI stays in **specialist** mode or role regardless of the query.
+Instead of just asking for an email, you are explicitly telling the AI to act as a specific professional (a "corporate communications specialist"). This sets the "mental" framework for the AI, influencing its vocabulary, level of formality, and overall perspective before it even looks at your specific email details.
+
+```python
+system_instructions = "You are a helpful assistant that writes emails and messages."
+    try:
+        response = client.models.generate_content(
+            model=TARGET_MODEL,
+            config=genai.types.GenerateContentConfig(system_instruction=system_instructions),
+            contents=prompt
+        )
+
+```
 ## 📌 Sample Output
-```text
+```powershell
 --- Welcome to your AI Email & Message Writer! ---
-Loading environment variables...
 Please provide details for the email/message you want to create.
-Enter purpose of the email or message: New Year Greeting
-Enter desired tone (e.g., formal, casual, enthusiastic): Formal
-Enter recipient details (e.g., friend, colleague, client): friend
-Enter key points to include (separated by commas): best wishes for health and prosperity
-Creating Email Prompt... 
+Enter purpose of the email or message: Project Update 
+Enter desired tone (e.g., formal, casual, enthusiastic): formal
+Enter recipient details (e.g., friend, colleague, client): client
+Enter key points to include (separated by commas): Q3 launch is delayed by 2 weeks due to server migration issues. Will let you know updated date by tomorrow eod
+Creating Email Prompt...
 Creating Gen AI client...
 Generating email/message... Please wait.
 
 --- Generated Email/Message ---
-Subject: New Year Greetings and Best Wishes
+Subject: Project Update: Q3 Launch Schedule
 
-Dear [Friend's Name],
+Body:
+Dear [Client Name],
 
-As we transition into the new year, I wanted to take a moment to extend my sincere well wishes to you.
+I am writing to provide an update regarding our upcoming Q3 launch.
 
-I hope the coming year brings you continued health, happiness, and great prosperity in all your endeavors. May it be a season of growth and success for you and your loved ones.
+Due to some unexpected technical challenges encountered during the server migration process, we have had to adjust our timeline. As a result, the launch will be delayed by approximately two weeks.
+
+Our team is working to finalize the revised schedule, and I will follow up with a confirmed launch date by the end of the day tomorrow.
+
+Thank you for your patience and understanding as we work to ensure a smooth transition.
 
 Best regards,
 
 [Your Name]
+[Your Title]
 ------------------------------
 ```
 ## ✨ Future Enhancements
@@ -119,12 +180,6 @@ Best regards,
 - Add Streamlit web UI
 - Save summaries to file (text/pdf)
 
-## 🎯 Learning Outcomes
-- How GenAI APIs work
-- Prompt engineering basics
-- Secure API key handling
-- Real-world GenAI use cases
-- End-to-end AI application flow
 
 ## Contributing
 Feel free to fork this repo, improve it, and submit a pull request 🚀

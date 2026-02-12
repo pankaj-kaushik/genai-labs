@@ -1,124 +1,120 @@
 """
-Study Buddy - An AI-Powered Learning Assistant
+Study Buddy - AI Learning Assistant
 
-This module provides an interactive learning experience using Google's Gemini API.
-It helps users understand complex concepts through simple explanations, analogies,
-key takeaways, and quiz questions.
+Interactive CLI that uses Google Gemini (via `google-genai`) to explain
+concepts at different expertise levels, provide analogies, key takeaways,
+and short quiz questions. Configuration is read from a local `.env` file
+via `python-dotenv`; ensure `GEMINI_API_KEY` is set before running.
 
 Usage:
     python main.py
-    
+
 Requirements:
-    - google-genai library
-    - python-dotenv library
-    - GEMINI_API_KEY environment variable
+    - google-genai
+    - python-dotenv
+    - GEMINI_API_KEY environment variable (or set in .env)
 """
 
 import os
 from dotenv import load_dotenv
 from google import genai
 
+# Load environment variables from .env file
+load_dotenv()
 
-def create_genai_client():
-    """
-    Initializes and returns a Google GenAI client.
-    
-    The client automatically uses the GEMINI_API_KEY from the environment
-    to authenticate with Google's API.
-    
+# Constants
+TARGET_MODEL = "gemini-3-flash-preview"
+
+def create_genai_client() -> 'genai.Client':
+    """Initialize and return an authenticated GenAI client.
+
+    The client uses the `GEMINI_API_KEY` from the environment (or `.env`).
+
     Returns:
-        genai.Client: An authenticated GenAI client instance.
+        genai.Client: Authenticated GenAI client instance.
     """
-    print("Creating Gen AI client...")
+    print("\nCreating Gen AI client...")
     return genai.Client()
 
-def create_prompt(topic):
-    """
-    Constructs a structured prompt for the Gemini model.
-    
-    This function creates a detailed system-style prompt that instructs Gemini
-    to act as a Study Buddy and provide explanations in a specific format.
-    
+def create_prompt(topic: str, level: str) -> str:
+    """Build a system-style prompt instructing the model how to teach a topic.
+
     Args:
-        topic (str): The concept or topic the user wants to learn about.
-        
+        topic: Concept or subject to explain.
+        level: One of "Beginner", "Intermediate", or "Advanced" which
+            controls the tone and depth of the explanation.
+
     Returns:
-        str: A formatted prompt string with instructions for the AI model.
+        A formatted prompt string suitable for sending to the model.
     """
-    # We use a system-style prompt to guide Gemini's behavior
-    prompt = f"""
-    You are an expert Study Buddy. 
-    1. Explain the concept of '{topic}' in simple terms (suitable for a 10-year-old).
-    2. Use an analogy to make it memorable.
-    3. Provide 3 bullet points of key takeaways.
-    4. Generate 2 multiple-choice questions to test the user's understanding.
-    """
-    return prompt
+    level_instructions = {
+        "Beginner": "Use simple analogies, avoid jargon, and explain like I'm 10.",
+        "Intermediate": "Use standard technical terms with brief definitions and practical examples.",
+        "Advanced": "Provide a deep dive into architecture, nuances, and edge cases. Assume I'm a pro."
+    }
 
-def initialize_environment():
-    """
-    Initializes the application environment.
-    
-    This function:
-    1. Loads environment variables from a .env file using python-dotenv
-    2. Verifies that the GEMINI_API_KEY is available
-    3. Prints the API key status for debugging purposes
-    
-    Note: In production, sensitive information like API keys should not be printed.
-    """
-    # Initialize environment variables
-    print("Loading environment variables...")
-    load_dotenv()
+    # Choose instructions based on requested level; default to concise guidance
+    constraints = level_instructions.get(level, "Present the topic clearly and concisely.")
 
-    # The client gets the API key from the environment variable `GEMINI_API_KEY`.
-    # print("API KEY:", os.getenv("GEMINI_API_KEY"))
+    user_prompt = f"""
+You are an expert Study Buddy.
+Task: Explain the concept of '{topic}' at a {level} level.
+Constraints: {constraints}
+Format: Use Markdown for clarity (bolding, bullet points, short examples, and a 2-3 question quiz).
+"""
+    return user_prompt
 
-def explain_concept(client, prompt):
-    """
-    Generates a simple explanation and quiz for a given topic using Gemini.
-    
-    This function calls the Gemini API with the provided prompt and returns
-    the model's response. It includes error handling for API failures.
-    
+
+def explain_concept(client: 'genai.Client', prompt: str) -> str:
+    """Request an explanation from the model and return the text result.
+
+    The response is expected to include an explanation, analogies, key
+    takeaways, and a short quiz. API errors are caught and returned as a
+    readable string so the CLI remains user-friendly.
+
     Args:
-        client (genai.Client): An authenticated GenAI client instance.
-        prompt (str): The formatted prompt containing the topic and instructions.
-        
+        client: Authenticated GenAI client.
+        prompt: Prompt produced by `create_prompt` describing task and format.
+
     Returns:
-        str: The AI-generated explanation, analogies, key points, and quiz questions.
-             If an error occurs, returns an error message string.
+        The model's textual response, or an error message on failure.
     """
     try:
         response = client.models.generate_content(
-            model="gemini-3-flash-preview",  # Using the fast and capable flash model
+            model=TARGET_MODEL,  # using the fast flash model for responsiveness
             contents=prompt
         )
         return response.text
     except Exception as e:
-        return f"An error occurred: {e}"
+        return f"An error occurred while calling the GenAI API: {e}"
 
-def main():
+def get_user_input() -> tuple[str, str]:
+    """Prompt the user for a topic and desired learning level.
+
+    Returns a tuple: (topic, level).
     """
-    Main entry point for the Study Buddy application.
-    
-    This function orchestrates the learning flow:
-    1. Displays a welcome message
-    2. Initializes the environment and API client
-    3. Prompts the user for a topic to learn about
-    4. Generates a customized explanation with analogies and quiz questions
-    5. Displays the results in a formatted manner
-    """
-    print("--- Welcome to your AI Study Buddy! ---")
-    initialize_environment()
     topic = input("What concept would you like to learn today? ")
-    print(f"\nAnalyzing '{topic}'... Please wait.\n")
-    print("Creating prompt...")
-    user_prompt = create_prompt(topic)
+    level = input("What is your learning level? (Beginner/Intermediate/Advanced) ")
+    return topic, level
+
+def main() -> None:
+    print("--- Welcome to your AI Study Buddy! ---")
+    print("Please enter the details of the topic you want to learn about.")
+    print("-" * 60)
+
+    topic, level = get_user_input()
+
+    print("\nCreating prompt...")
+    user_prompt = create_prompt(topic, level)
+
     client = create_genai_client()
+    print(f"\nAnalyzing '{topic}'... Please wait.\n")
     explanation = explain_concept(client, user_prompt)
-    print("-" * 30)
+
+    print("-" * 60)
     print(explanation)
-    print("-" * 30)
+    print("-" * 60)
+
 
 if __name__ == "__main__":
     main()

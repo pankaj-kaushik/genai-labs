@@ -8,7 +8,7 @@ This project is ideal for:
 - Students 📚
 - Working professionals 👨‍💻
 - Content creators ✍️
-- Anyone who wants quick insights from long articles
+- Anyone who wants quick insights about a given topic
 
 ## 🚀 What This Project Does
 - Enter any topic or concept
@@ -157,6 +157,17 @@ An **Array** is just a **numbered list** of items sitting side-by-side.
 **Does that make sense, or should we try another analogy?** 🧩
 ------------------------------------------------------------
 ```
+
+## ✨ Future Enhancements
+- Support Memory (Conversation Context -> History)
+- Support Voice Mode
+- Add PDF Study Mode (Explaning chapters from PDF)
+- Add Quiz Mode
+- Support for Streamlit UI
+- Add RAG (Advanced Version)
+  - Study Buddy answers from your own notes only (🧠 Personal AI Tutor trained on your notes)
+- Convert into Telegram Bot
+  - You will have mobile study buddy
 
 ## Contributing
 Feel free to fork this repo, improve it, and submit a pull request 🚀

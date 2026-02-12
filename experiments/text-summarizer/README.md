@@ -82,7 +82,7 @@ response = client.models.generate_content(
 ```
 
 ### Role Prompting
-In the `professional_summary()` method, we provide a persona as part of the prompt to guide the model's behavior. By instructing the AI to act as a professional editor, we establish a contextual framework that influences its vocabulary, level of formality, and overall approach to processing the input text.
+In the `professional_summary()` method, we provided a persona as part of the prompt to guide the model's behavior. By instructing the AI to act as a professional editor, we established a contextual framework that influences its vocabulary, level of formality, and overall approach to processing the input text.
 
 Prompt Used
 ```text

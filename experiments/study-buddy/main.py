@@ -57,11 +57,11 @@ def create_prompt(topic: str, level: str) -> str:
     constraints = level_instructions.get(level, "Present the topic clearly and concisely.")
 
     user_prompt = f"""
-You are an expert Study Buddy.
-Task: Explain the concept of '{topic}' at a {level} level.
-Constraints: {constraints}
-Format: Use Markdown for clarity (bolding, bullet points, short examples, and a 2-3 question quiz).
-"""
+        You are an expert Study Buddy.
+        Task: Explain the concept of '{topic}' at a {level} level.
+        Constraints: {constraints}
+        Format: Use Markdown for clarity (bolding, bullet points, short examples, and a 2-3 question quiz).
+        """
     return user_prompt
 
 

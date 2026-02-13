@@ -18,7 +18,6 @@ Requirements:
 """
 
 import os
-from typing import Tuple
 from dotenv import load_dotenv
 from google import genai
 

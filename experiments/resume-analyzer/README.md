@@ -39,6 +39,18 @@ By building or using this project, you will learn:
 - 🏫 Automated resume feedback systems for placement cells  
 - 🏢 Internal employee resume optimization tools
 
+## 🧩 Architecture & Sequence Flow
+```text
+User -> CLI/Web Interface -> Resume Reader (PDF/Text Parser) -> Prompt Builder -> Gemini LLM API -> Response Processor -> Formatted Output to User
+```
+1. User uploads resume (pdf/text)
+2. Application extract text from resume
+3. System builds a structured prompt
+4. Prompt is sent to Gemini LLM API
+5. Gemini analyzes resume and generates response
+6. Application processes and formats response
+7. Improved resume + suggestion displayed to user
+
 ## ⚙️ Setup Instructions
 ### Step 1: Clone the Repository
 ```bash
@@ -87,49 +99,41 @@ python main.py
 ## 🧠 Prompt Engineering Used
 We have used following prompt techniques to ensure AI behaves reliably. Here is the breakdown.
 
-### Zero-Shot Prompting
-In `create_email_prompt()` method we passed the instruction in `user_prompt` (see below) but didn't mention any specific examples. The code tells the AI **what** to do (write an email) and **how** to format it (Subject/Body), but it gives zero finished examples of a "good" email for the AI to copy. It relies entirely on the AI's pre-existing knowledge of what a professional email looks like.
+### Role Prompting
+In `create_user_prompt()` method we passed the instruction in `user_prompt` (see below) but didn't mention any specific examples. The code tells the AI **what** to do (Improve the following resume professionaly.) and **instructions** to generate required information, but it gives zero finished examples of a "good" rfor the AI to copy. It relies entirely on the AI's pre-existing knowledge of what a good explanation looks like.
 
 
 ### Structured Prompting
-In `create_email_prompt()` method we passed the instruction in `user_prompt` (see below) that dictate the organization of the input and the exact layout of the output.
-Instead of writing a long, conversational sentence, we used **labels** and **delimiters** to organize the information.
-
-- **Input Structuring:** Using headers like KEY POINTS TO INCLUDE: helps the AI distinguish between the "context" (who the email is for) and the "content" (what must be said).
-
-- **Output Structuring:** The RESPONSE FORMAT: section forces the AI to follow a specific pattern (SUBJECT: followed by BODY:), making it "machine-readable" so you could easily split the text later using Python.
+In `create_user_prompt()` method we passed the instruction in `user_prompt` (see below) that dictates the organization of the input and the exact layout of the output. We provided explicit structured instructions with numbered items (1, 2, 3) to ensure the AI generates organized, multi-faceted output covering key strengths, improvement areas, and ATS compatibility. We used clear section headers like ```Resume content:``` to separate instructions from the actual resume data. We also applied **context injection** by dynamically embedding the resume content into the prompt template.
 
 ```python
 user_prompt = f"""
-    Write a {tone} email/message to {recipient} regarding '{purpose}'.
-    Key points to include: 
-    {key_points}.
-    
-    RESPONSE FORMAT:
-    Please provide the response in the following format:
-    Subject: [Subject Line]
-    Body: [Email Body]
+ user_prompt = f"""
 
-    Guidelines
-    - Keep language natural and human-like
-    - Maintain clarity and professionalism
-    - Add proper greeting and closing
-    - Keep it concise but complete
-    Generate only the final email/message.
+        Improve the following resume professionaly.
+        Also provide:
+        1. Key strengths and skills highlighted in the resume.
+        2. Areas for improvement in terms of content, structure, and formatting.
+        3. ATS (Applicant Tracking System) compatibility analysis and suggestions.
+
+        Resume content:
+        {content}
+        """
 ```
 ### Role Prompting
-In `generate_email()` method, we passed the `system_instruction` parameter in the configuration which ensures the AI stays in **specialist** mode or role regardless of the query.
-Instead of just asking for an email, we are explicitly telling the AI to act as a specific professional (a "helpful assistant"). This sets the "mental" framework for the AI, influencing its vocabulary, level of formality, and overall perspective before it even looks at your specific email details.
+In `analyze_resume()` method, we passed the `system_instruction` parameter via `GenerateContentConfig` to enforce a consistent professional role. The instruction "You are an expert resume writing assistant. Please analyze the following resume:" explicitly defines the AI's identity and expertise domain. This role definition acts as a persistent behavioral anchor throughout the interaction, shaping the AI's tone, vocabulary, technical depth, and analytical approach—ensuring it responds as a specialized professional rather than a general-purpose assistant. We also configure the `temperature` parameter for consistent output quality.
 
 ```python
-system_instructions = "You are a helpful assistant that writes emails and messages."
+  system_instructions = "You are an expert resume writing assistant. Please analyze the following resume:"
     try:
         response = client.models.generate_content(
             model=TARGET_MODEL,
-            config=genai.types.GenerateContentConfig(system_instruction=system_instructions),
+            config=genai.types.GenerateContentConfig(
+                system_instruction=system_instructions,
+                temperature=TEMPERATURE
+            ),
             contents=prompt
         )
-
 ```
 ## 📌 Sample Output
 ```powershell

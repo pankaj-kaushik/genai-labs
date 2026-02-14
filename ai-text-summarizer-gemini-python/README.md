@@ -15,9 +15,9 @@ It highlights how **prompt variations → output variations**, a foundational co
 
 ## 🎯 Learning Outcomes
 After completing this project, you will understand
-- How to call LLM APIs using python
-- How prompt design affects LLM outputs
-- Zero-Shot style prompting
+- How to integrate **Gemini LLM APIs** using python
+- How **prompt design** affects LLM outputs
+- **Zero-Shot** style prompting
 - Comparative prompt experimentation 
 
 ## 🏢 Industry Use Cases
@@ -99,3 +99,7 @@ Artificial intelligence is a transformative force redefining human potential acr
 
 ## Contributing
 Feel free to fork this repo, improve it, and submit a pull request 🚀
+
+## 🙌 Acknowledgements
+- Google Gemini LLM
+- Open-source Python community

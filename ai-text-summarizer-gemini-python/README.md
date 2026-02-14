@@ -96,3 +96,6 @@ Artificial intelligence is a transformative force redefining human potential acr
 - Choose summary length (short / medium / detailed)
 - Language selection (English / Hindi)
 - Save summaries to file
+
+## Contributing
+Feel free to fork this repo, improve it, and submit a pull request 🚀

@@ -202,11 +202,11 @@ def create_story_prompt(hero: str, genre: str, place: str, idea: str, age_group:
 ```
 
 ### Key Prompt Engineering Principles Applied:
-✨ **Role Assignment**: Sets context and expertise level
-✨ **Structured Input**: Labeled parameters for clarity
-✨ **Chain-of-Thought**: Step-by-step reasoning guide
-✨ **Constraints**: Explicit boundaries for safe output
-✨ **Format Specification**: Clear expectations for structure
+- **Role Assignment**: Sets context and expertise level
+- **Structured Input**: Labeled parameters for clarity
+- **Chain-of-Thought**: Step-by-step reasoning guide
+- **Constraints**: Explicit boundaries for safe output
+- **Format Specification**: Clear expectations for structure
 
 ## 📌 Sample Output
 ```powershell
@@ -240,6 +240,22 @@ When he returned, he shared the grapes with his friends. Soon, the whole forest 
 
 **Moral: Curiosity leads us to wonderful new discoveries and makes life an exciting adventure.**
 ```
+
+## ✨ Future Enhancements
+- 🖼️ Image Generation Integration
+  - Generate illustrations per story scene
+- 🎮 Choose-Your-Own-Story Mode
+  - Add branching decisions ("Should the rabbit enter the forest or climb the hill")
+- 🎤 Voice Narration
+  - Convert stories into audio using TTS.
+- 🌍 Multilingual Support
+  - Generate stories in (Hindi, Spanish, French, Germany)
+- 💾 Story Storage System
+  - Save stories to database
+  - Track reading history
+  - User profile
+- Add Streamlist Web UI
+
 ## 🐛 Troubleshooting
 Common Issues:
 
@@ -279,20 +295,31 @@ An error occurred: [error details]
 Solution: Check the error message for specific details and verify your setup
 ```
 
-## ✨ Future Enhancements
-- 🖼️ Image Generation Integration
-  - Generate illustrations per story scene
-- 🎮 Choose-Your-Own-Story Mode
-  - Add branching decisions ("Should the rabbit enter the forest or climb the hill")
-- 🎤 Voice Narration
-  - Convert stories into audio using TTS.
-- 🌍 Multilingual Support
-  - Generate stories in (Hindi, Spanish, French, Germany)
-- 💾 Story Storage System
-  - Save stories to database
-  - Track reading history
-  - User profile
-- Add Streamlist Web UI
+## 📝 Configuration Tips
+
+### Prompt Design Guidelines:
+- **Be specific:** Use clear task definitions with labeled sections
+- **Set constraints:** Define tone, vocabulary, and story length explicitly
+- **Request format:** Specify moral statement and story structure
+- **Include parameters:** Ask for character, genre, place, lesson, and age group
+- **Add moral:** Require a clear moral at the end
+
+### Age Group Selection:
+- **5-7:** Simple vocabulary, gentle themes, short sentences
+- **8-10:** Slightly more complex language, adventurous plots, deeper lessons
+
+### Model Configuration:
+- **gemini-3-flash-preview:** Fast, suitable for interactive story generation
+- **No temperature set:** Uses default for balanced creativity and coherence
+- Consider adding temperature control for more/less creative stories
+
+### Input Formulation:
+- **Be specific:** "A brave rabbit" vs "rabbit"
+- **Use proper genres:** "Fantasy" vs "animal story"
+- **Single lesson:** Focus on one moral per story for clarity
+- **Follow up:** Try new combinations for varied stories
+
+
 
 ## Contributing
 💡 If you found this helpful...

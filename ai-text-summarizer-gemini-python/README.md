@@ -91,7 +91,7 @@ This project strengthens both **AI integration** skills and **practical software
 ```text
 User -> CLI Interface -> File Reader -> Text Extraction -> Prompt Builder (3 types) -> Gemini LLM API -> Response Processor -> Formatted Output Display
 ```
-Detailed Flow:\
+**Detailed Flow:**
 1. Application starts - User launches the CLI application
 2. File reading - System reads text from ```sample_article.txt```
 3. Prompt construction - Three different prompts are prepared:
@@ -255,13 +255,13 @@ Solution: Try again or check API service status
 ```
 
 ## 📝 Configuration Tips
-Prompt Design Guidelines:
+### Prompt Design Guidelines:
 - **Be specific:** Clearly state the desired output format
 - **Set constraints:** Define length, style, or structure requirements
 - **Use action verbs:** "Summarize", "Extract", "Generate"
 - **Test variations:** Experiment with different phrasings
 
-Model Selection:
+### Model Selection:
 - **gemini-3-flash-preview:** Fast, cost-effective for summarization
 - Consider other models for specialized needs
 

@@ -1,0 +1,15 @@
+"""
+meeting_transcript.txt
+
+This file contains the transcript of the meeting that will be processed by the AI Meeting Notes Generator.
+"""
+Moderator: Good morning everyone, let's get started with today's meeting.
+Alice: I've completed the initial draft of the project proposal and shared it with the team.
+Bob: Thanks, Alice. I reviewed it and added some comments regarding the timeline.
+Charlie: I think we should allocate more time for the testing phase.
+Alice: That's a good point, Charlie. I'll update the proposal accordingly.
+Moderator: Does anyone have updates on the budget?
+Dana: I've received the latest figures from finance and will circulate them after the meeting.
+Bob: Are there any blockers we need to address?
+Charlie: Not at the moment, everything is on track.
+Moderator: Great. Let's aim to finalize the proposal by Friday. Thanks, everyone!

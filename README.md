@@ -216,6 +216,10 @@ Some experiments you may find or add
 - Outputs may vary due to model randomness
 - This repo is for learning & experimentation only
 
+## 🙌 Acknowledgements
+- Google Gemini LLM
+- Open-source Python community
+
 ## Contributing
 💡 If you found this helpful...
 - ⭐ Star the repo

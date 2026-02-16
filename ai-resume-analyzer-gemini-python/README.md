@@ -426,7 +426,7 @@ Solution: Check API quota limits and service status
 - **ATS-friendly:** Use standard headers and simple formatting
 - **Tailored content:** Customize for each job application
 
-**💡 Tips for Best Results**
+## 💡 Tips for Best Results
 - **Well-formatted input:** Clean, properly structured resumes yield better analysis
 - **Include context:** Docstrings and detailed descriptions improve feedback
 - **Focus on metrics:** Quantifiable achievements get stronger recognition

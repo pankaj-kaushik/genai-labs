@@ -24,23 +24,23 @@ from google import genai
 load_dotenv()
 
 # Constants
-TARGET_MODEL = "gemini-3-flash-preview"  # Gemini model for text generation
-TARGET_FILE = "sample_article.txt"  # Input file containing text to summarize
+TARGET_MODEL: str = "gemini-3-flash-preview"  # Gemini model for text generation
+TARGET_FILE: str = "sample_article.txt"  # Input file containing text to summarize
 
-BULLET_PROMPT = """
+BULLET_PROMPT: str = """
 Summarize the following article into 5 bullet points:
 """
 
-EXECUTIVE_PROMPT = """
+EXECUTIVE_PROMPT: str = """
 Write a concise executive summary of the following article:
 """
 
-ONE_LINE_PROMPT = """
+ONE_LINE_PROMPT: str = """
 Summarize the article in one single impactful sentence:
 """
 
 
-def create_genai_client():
+def create_genai_client() -> genai.Client:
     """
     Initializes and returns a Google GenAI client.
     
@@ -52,7 +52,7 @@ def create_genai_client():
     """
     return genai.Client()
 
-def create_summary(client, text, prompt_template):
+def create_summary(client: genai.Client, text: str, prompt_template: str) -> str:
     """
     Generates a summary of the given text using the Gemini API.
     
@@ -76,7 +76,7 @@ def create_summary(client, text, prompt_template):
         TimeoutError: API request exceeds timeout.
         Exception: Any other unexpected errors during API communication.
     """
-    user_prompt = create_user_prompt(text, prompt_template)
+    user_prompt: str = create_user_prompt(text, prompt_template)
     try:
         response = client.models.generate_content(
             model=TARGET_MODEL,
@@ -84,27 +84,27 @@ def create_summary(client, text, prompt_template):
         )
         return response.text
     except ValueError as ve:
-        error_msg = f"Invalid input or API configuration error: {ve}"
+        error_msg: str = f"Invalid input or API configuration error: {ve}"
         print(f"Error: {error_msg}")
         return error_msg
     except AttributeError as ae:
-        error_msg = f"API response format error: {ae}"
+        error_msg: str = f"API response format error: {ae}"
         print(f"Error: {error_msg}")
         return error_msg
     except ConnectionError as ce:
-        error_msg = f"Connection error while calling Gemini API: {ce}"
+        error_msg: str = f"Connection error while calling Gemini API: {ce}"
         print(f"Error: {error_msg}")
         return error_msg
     except TimeoutError as te:
-        error_msg = f"API request timed out: {te}"
+        error_msg: str = f"API request timed out: {te}"
         print(f"Error: {error_msg}")
         return error_msg
     except Exception as e:
-        error_msg = f"An unexpected error occurred while calling Gemini API: {e}"
+        error_msg: str = f"An unexpected error occurred while calling Gemini API: {e}"
         print(f"Error: {error_msg}")
         return error_msg
 
-def read_text_from_file(file_path):
+def read_text_from_file(file_path: str) -> str:
     """
     Reads text content from a file.
     
@@ -123,7 +123,7 @@ def read_text_from_file(file_path):
     """
     # If a relative path is provided, treat it as relative to this script's directory.
     if not os.path.isabs(file_path):
-        base_dir = os.path.dirname(__file__)
+        base_dir: str = os.path.dirname(__file__)
         file_path = os.path.join(base_dir, file_path)
 
     try:
@@ -132,7 +132,7 @@ def read_text_from_file(file_path):
     except FileNotFoundError:
         raise FileNotFoundError(f"Could not find input file at: {file_path}")
 
-def create_user_prompt(text, prompt_template):
+def create_user_prompt(text: str, prompt_template: str) -> str:
     """
     Combines a prompt template with input text to create a complete user prompt.
     
@@ -146,10 +146,10 @@ def create_user_prompt(text, prompt_template):
     Returns:
         str: The complete prompt combining template and text.
     """
-    user_prompt = f"{prompt_template}\n{text}" 
+    user_prompt: str = f"{prompt_template}\n{text}" 
     return user_prompt
 
-def main():
+def main() -> None:
     """
     Main entry point for the AI Text Summarizer application.
     
@@ -164,28 +164,27 @@ def main():
     """
     print("--- Welcome to your AI Text Summarizer! ---")
     print("Reading input text from file...")
-    user_text = read_text_from_file(TARGET_FILE)
+    user_text: str = read_text_from_file(TARGET_FILE)
     
     print("Generating Basic summary...Please wait...")
     
     # Initialize the Gemini API client
-    client = create_genai_client()
+    client: genai.Client = create_genai_client()
     
     # Generate and display bullet point summary
-    bullet_summary = create_summary(client, user_text, BULLET_PROMPT)
+    bullet_summary: str = create_summary(client, user_text, BULLET_PROMPT)
     print("\n--- Bullet Point Summary ---")
     print(bullet_summary)
 
     # Generate and display executive summary
-    executive_summary = create_summary(client, user_text, EXECUTIVE_PROMPT)
+    executive_summary: str = create_summary(client, user_text, EXECUTIVE_PROMPT)
     print("\n--- Executive Summary ---")
     print(executive_summary)
 
     # Generate and display one-line summary
     print("\n--- One Line Summary ---")
-    one_line_summary = create_summary(client, user_text, ONE_LINE_PROMPT)
+    one_line_summary: str = create_summary(client, user_text, ONE_LINE_PROMPT)
     print(one_line_summary)
 
 if __name__ == "__main__":
-    main()  
-    
+    main()

@@ -91,6 +91,18 @@ This project strengthens both **AI integration** skills and **practical software
 ```text
 User -> CLI Interface -> File Reader -> Text Extraction -> Prompt Builder (3 types) -> Gemini LLM API -> Response Processor -> Formatted Output Display
 ```
+Detailed Flow:\
+1. Application starts - User launches the CLI application
+2. File reading - System reads text from ```sample_article.txt```
+3. Prompt construction - Three different prompts are prepared:
+- Bullet point prompt
+- Executive summary prompt
+- One-line summary prompt
+4. API client initialization - Gemini client is created with API key
+5. Sequential generation - Each prompt is sent to Gemini API
+6. Response processing - API responses are formatted
+7. Error handling - Catches and handles various exceptions
+8. Output display - Results are printed to console in organized sections
 
 ## ▶️ How to Run the Project
 ### Step 1: Update ```sample_article.txt``` File
@@ -100,23 +112,56 @@ Copy and paste content of your article in ```sample_article.txt``` file
 ```bash
 python ai-text-summarizer.py
 ```
+
 ## 🧠 Prompt Engineering Used
 We have used following prompt techniques to ensure AI behaves reliably. Here is the breakdown.
 
 ### Zero-Shot Prompting
-In the `ai-text-summarizer.py` file, we have specified different prompt instruction that is passed directly to the model without additional context or examples. This approach relies entirely on the model's pre-trained knowledge of effective summarization, providing minimal guidance on both the desired format and quality standards.
-
+The application uses zero-shot prompting, where instructions are provided without examples:
 ```python
-BULLET_PROMPT = """
-Summarize the following article into 5 bullet points:
-"""
-EXECUTIVE_PROMPT = """
-Write a concise executive summary of the following article:
-"""
-ONE_LINE_PROMPT = """
-Summarize the article in one single impactful sentence:
-"""
+BULLET_PROMPT = """Summarize the following article into 5 bullet points:"""
 ```
+**Why Zero-Shot?**
+
+- Relies on model's pre-trained knowledge
+- No need for example summaries
+- Flexible across different content types
+- Simpler prompt construction
+
+### Task-Specific Prompt Design
+Each prompt is optimized for its specific output format:
+```python
+EXECUTIVE_PROMPT = """Write a concise executive summary of the following article:"""
+```
+**Key characteristics:**
+- Clear, unambiguous instructions
+- Specific format requirements
+- Action-oriented verbs ("Summarize", "Write")
+- No unnecessary complexity
+
+### Constraint-Based Prompting
+Prompts include explicit constraints for focused outputs:
+```python
+ONE_LINE_PROMPT = """Summarize the article in one single impactful sentence:"""
+```
+**Benefits:**
+- Controls output length
+- Ensures consistency
+- Prevents verbose responses
+- Focuses model on core message
+
+### Comparative Experimentation
+The tool demonstrates how different prompt styles produce different results:
+
+- Structural variation: Bullet vs paragraph format
+- Length variation: One-line vs executive summary
+- Purpose variation: Quick reference vs professional overview
+This approach teaches:
+
+- How prompts influence output style
+- How to select appropriate formats for use cases
+- How to design prompts for specific needs
+
 ## 📌 Sample Output
 ```powershell
 --- Welcome to your AI Text Summarizer! ---
@@ -144,13 +189,81 @@ Artificial intelligence is a transformative force redefining human potential acr
 ```
 
 ## ✨ Future Enhancements
-- 🌐 Add **Streamlit web UI**
-- 📄 Multi-document **summarization**
-- 🔄 Add **streaming response**
-- 📥 Support **PDF / URL ingestion pipeline**
-- 📏 Choose **summary length** (short / medium / detailed)
-- 🌍 **Language selection** (English / Hindi)
-- 💾 Save **summaries to file**
+- 🌐 Web Interface with Streamlit
+  - Drag-and-drop file upload
+  - Real-time summary generation
+  - Side-by-side comparison view
+  - Export to PDF/Word
+- 📄 Multi-Format Support
+  - PDF document parsing
+  - DOCX file processing
+  - URL/web page scraping
+  - Markdown file support
+- 🎛️ Customizable Parameters
+  - Adjustable summary length
+  - Custom number of bullet points
+  - Temperature control for creativity
+  - Multiple language support
+- 📊 Analytics & Metrics
+  - Compression ratio calculation
+  - Readability scores
+  - Key entity extraction
+  - Sentiment analysis
+- 💾 Output Management
+  - Save summaries to files
+  - Export history
+  - Batch processing mode
+  - Compare multiple articles
+- 🔄 Advanced Features
+  - Multi-document summarization
+  - Hierarchical summarization
+  - Query-focused summaries
+  - Abstractive vs extractive comparison
+- 🎯 Domain-Specific Templates
+  - Medical document summaries
+  - Legal brief generation
+  - Technical documentation
+  - Financial report summaries
+🔐 Enterprise Features
+  - User authentication
+  - Usage tracking
+  - API rate limiting
+  - Cost monitoring
+
+## 🐛 Troubleshooting
+Common Issues:
+
+**API Key Error:**
+```python
+Error: GEMINI_API_KEY not found
+Solution: Create .env file with your API key
+```
+**File Not Found:**
+```python
+Error: Could not find input file
+Solution: Ensure sample_article.txt exists in the project directory
+```
+**Connection Error:**
+```python
+Error: Connection error while calling Gemini API
+Solution: Check your internet connection and API status
+```
+**Timeout Error:**
+```python
+Error: Request timed out
+Solution: Try again or check API service status
+```
+
+## 📝 Configuration Tips
+Prompt Design Guidelines:
+- **Be specific:** Clearly state the desired output format
+- **Set constraints:** Define length, style, or structure requirements
+- **Use action verbs:** "Summarize", "Extract", "Generate"
+- **Test variations:** Experiment with different phrasings
+
+Model Selection:
+- **gemini-3-flash-preview:** Fast, cost-effective for summarization
+- Consider other models for specialized needs
 
 ## Contributing
 💡 If you found this helpful...
@@ -162,3 +275,9 @@ Artificial intelligence is a transformative force redefining human potential acr
 ## 🙌 Acknowledgements
 - Google Gemini LLM
 - Open-source Python community
+
+---
+
+Happy Summarizing! 🧠✨
+
+Remember: Effective summarization starts with effective prompts. Experiment with different prompt styles to discover what works best for your specific content types and use cases!

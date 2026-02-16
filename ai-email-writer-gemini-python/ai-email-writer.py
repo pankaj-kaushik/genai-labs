@@ -22,6 +22,7 @@ Notes:
 """
 
 import os
+from typing import Tuple, Optional
 from dotenv import load_dotenv
 from google import genai
 
@@ -30,7 +31,7 @@ from google import genai
 load_dotenv()
 
 # Constants
-TARGET_MODEL = "gemini-3-flash-preview"
+TARGET_MODEL: str = "gemini-3-flash-preview"
 
 
 def create_email_prompt(purpose: str, tone: str, recipient: str, key_points: str) -> str:
@@ -53,7 +54,7 @@ def create_email_prompt(purpose: str, tone: str, recipient: str, key_points: str
              including the requested response format (Subject/Body).
     """
     # We use a system-style prompt to guide Gemini's behavior
-    email_prompt = f"""
+    email_prompt: str = f"""
     Write a {tone} email/message to {recipient} regarding '{purpose}'.
     Key points to include: 
     {key_points}.
@@ -72,7 +73,7 @@ def create_email_prompt(purpose: str, tone: str, recipient: str, key_points: str
     """
     return email_prompt
 
-def get_user_input():
+def get_user_input() -> Tuple[str, str, str, str]:
     """
     Collects email composition details from the user via interactive prompts.
     
@@ -80,13 +81,13 @@ def get_user_input():
         tuple: A tuple containing four strings in the order:
             (purpose, tone, recipient, key_points)
     """
-    purpose = input("Enter purpose of the email or message: ")
-    tone = input("Enter desired tone (e.g., formal, casual, enthusiastic): ")
-    recipient = input("Enter recipient details (e.g., friend, colleague, client): ")
-    key_points = input("Enter key points to include (separated by commas): ")
+    purpose: str = input("Enter purpose of the email or message: ")
+    tone: str = input("Enter desired tone (e.g., formal, casual, enthusiastic): ")
+    recipient: str = input("Enter recipient details (e.g., friend, colleague, client): ")
+    key_points: str = input("Enter key points to include (separated by commas): ")
     return purpose, tone, recipient, key_points
 
-def create_genai_client(model=TARGET_MODEL, config=None):
+def create_genai_client(model: str = TARGET_MODEL, config: Optional[genai.types.GenerateContentConfig] = None) -> genai.Client:
     """
     Initializes and returns a Google GenAI client.
     
@@ -98,7 +99,7 @@ def create_genai_client(model=TARGET_MODEL, config=None):
     """
     return genai.Client()
 
-def generate_email(client, prompt):
+def generate_email(client: genai.Client, prompt: str) -> str:
     """
     Generates an email or message using the Gemini API.
     
@@ -116,7 +117,7 @@ def generate_email(client, prompt):
              while calling the API, the function catches the exception and
              returns a human-readable error string instead of raising.
     """
-    system_instructions = "You are a helpful assistant that writes emails and messages."
+    system_instructions: str = "You are a helpful assistant that writes emails and messages."
     try:
         response = client.models.generate_content(
             model=TARGET_MODEL,
@@ -135,7 +136,7 @@ def generate_email(client, prompt):
     except Exception as e:
         return f"An error occurred: {e}"
 
-def main():
+def main() -> None:
     """
     Main entry point for the AI Email & Message Writer application.
     This function orchestrates the email/message generation workflow by:
@@ -153,12 +154,16 @@ def main():
     
     print("--- Welcome to your AI Email & Message Writer! ---")
     print("Please provide details for the email/message you want to create.")
+    purpose: str
+    tone: str
+    recipient: str
+    key_points: str
     purpose, tone, recipient, key_points = get_user_input()
     print("Creating Email Prompt...")
-    user_prompt = create_email_prompt(purpose, tone, recipient, key_points)
-    client = create_genai_client()
+    user_prompt: str = create_email_prompt(purpose, tone, recipient, key_points)
+    client: genai.Client = create_genai_client()
     print("Generating email/message... Please wait.\n")
-    result = generate_email(client, user_prompt)
+    result: str = generate_email(client, user_prompt)
     print("--- Generated Email/Message ---")
     print(result)
     print("-" * 30)

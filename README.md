@@ -1,66 +1,125 @@
-# 🧪 GenAI Labs
+# 🚀 Gen AI Beginner Projects
 
-**GenAI Labs** is a personal experimentation playground for learning and exploring **Generative AI use cases** using Python and modern LLMs.
+Welcome to **Gen AI Beginner Projects**👋 - a hands-on learning repository designed to help you understand the fundamentals of **Generative AI** by building real-world projects using Python and modern LLMs.
 
-This repository contains **small, focused GenAI experiments**, each living in its own folder, designed to:
-- understand LLM fundamentals
-- learn prompt engineering
-- explore real-world GenAI use cases
-- build intuition before production-grade systems
+This repository focuses on practical implementation of concepts like:
 
-⚠️ This repo is **not production-ready**. The goal is learning by building.
+- Prompt Engineering
+- LLM APIs (like OpenAI API)
+- Embeddings
+- Vector Databases
+- RAG (Retrieval-Augmented Generation)
+- AI Agents
 
----
+Instead of just learning theory, this repo emphasizes **learning by building**.
 
+If you’ve ever wondered:
+- How does ChatGPT actually work?
+- How can I build my own AI-powered app?
+- How do companies use Generative AI in real products?
+
+This repository is the practical answer to those questions.
+
+## 🎯 Purpose of This Repository
+This repository contains **small, focused Gen AI projects**, each living in its own folder, designed to:
+- 📌 To build strong foundational knowledge in Generative AI
+- 🛠️ To create practical, portfolio-ready projects
+- 📚 To document experiments and learnings
+- 🚀 To transition from beginner to intermediate level in Gen AI
+- 💼 To prepare for AI/ML/LLM-based roles
+- 🧠 To build intuition before production-grade systems
+
+Each project is intentionally designed to focus on one or two core concepts to avoid overwhelming complexity.
+
+⚠️ This repo is **not production-ready**. 
+
+## 🧠 What You’ll Learn from This Repo
+
+By going through these projects, you will learn:
+
+- Prompt Engineering
+  - Zero Shot, Few Shot, Chain-of-Thought Prompting
+  - System vs User Prompts
+  - Temperature, Top-p tuning
+  - Output Structuring (JSON, Markdown)
+- Working with LLM APIs
+  - Making API calls
+  - Handling tokens & rate limits
+  - Streaming response
+  - Error Handling
+- Embeddings & Semantic Search
+  - What embeddings are
+  - Converting text -> vectors
+  - Cosine similarity
+  - Semantic retrieval 
+- Vector Databases
+  - Indexing embeddings
+  - Storing & quering vectors
+  - Similarity search
+- RAG (Retrieval-Agumented Generation)
+  - Chunking strategies
+  - Context injections
+  - Reducing hallucinations
+  - Knowledge-grounded response
+- AI Agents
+  - Tool usage
+  - Task planning
+  - Multi-step reasoning
+  - Basic agent workflows
+
+## 🚀 Who Should Use This Repo?
+This repository is perfect for:
+
+- 🧑‍🎓 Students learning Generative AI
+- 👨‍💻 Developers transitioning into AI
+- 🔄 Professionals switching to AI/ML roles
+- 🚀 Anyone who wants to build an AI portfolio
+- 🧠 Curious minds who want to understand how modern AI works
+
+If you are at beginner level and want structured, practical learning — this repo is for you.
+
+## Generative AI Learning Roadmap
+```mermaid
+graph TD
+
+A[Start: Generative AI Basics] --> B[Prompt Engineering]
+B --> C[LLM APIs]
+C --> D[Build Simple Apps<br/>Summarizer / Email Generator]
+
+D --> E[Embeddings]
+E --> F[Semantic Search]
+F --> G[Vector Databases]
+
+G --> H[RAG - Retrieval Augmented Generation]
+H --> I[Build Chat with PDF / Knowledge Bot]
+
+I --> J[AI Agents Basics]
+J --> K[Tool Calling]
+K --> L[Multi-step Reasoning Apps]
+
+L --> M[Intermediate Gen AI Projects]
+```
 ## 📂 Repository Structure
 
 ```text
-genai-labs/
+gen-ai-beginner-projects/
 │
-├── experiments/
-│   ├── text-summarizer/
-│   │   ├── main.py
-│   │   ├── requirements.txt
-│   │   └── README.md
-│   │
-│   ├── chat-with-pdf/
-│   │   ├── main.py
-│   │   ├── requirements.txt
-│   │   └── README.md
-│   │
-│   └── ...
+├── ai-text-summarizer-gemini-python/
+│   ├── gemini-text-summarizer.py
+│   ├── READEME.md
 │
+├── ai-email-writer-gemini-python/
+│   ├── gemini-email-writer.py
+│   ├── READEME.md
+│   
+├── ...
+│
+├── requirements.txt
 ├── .env.example
 ├── .gitignore
 └── README.md
 ```
 
-**Each experiment:**
-- is self-contained
-- has its own dependencies
-- can be run independently
-
----
-
-## 🧠 What You’ll Learn from This Repo
-
-By going through these experiments, you will learn:
-
-- How LLMs work at a practical level
-- Prompt design & prompt tuning
-- Using LLM APIs (Gemini / OpenAI / others)
-- Handling tokens, temperature, max output
-- Building GenAI pipelines (input → LLM → output)
-- Using embeddings & vector search (in later labs)
-- Structuring GenAI projects properly
-
-**Perfect for:**
-
-- Beginners in GenAI
-- Software engineers exploring AI
-- System design + GenAI learners
-
----
 ## 🛠 Tech Stack
 Common stack used across experiments:
 - **Language:** Python 3.10+
@@ -69,15 +128,12 @@ Common stack used across experiments:
 - **Env Management:** python-dotenv
 - **IDE:** VS Code (recommended)
 
-**📌 Each experiment may use additional libraries — check its requirements.txt**
-
----
 ## ⚙️ Environment Setup (One-Time)
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/your-username/genai-labs.git
-cd genai-labs
+git clone https://github.com/pankaj-kaushik/gen-ai-beginner-projects.git
+cd gen-ai-beginner-projects
 ```
 ### Step 2: Create a Virtual Environment
 ```bash
@@ -100,38 +156,37 @@ Create a .env file at the root
 GEMINI_API_KEY="your_api_key_here"
 OPENAI_API_KEY="your_api_key_here"
 ```
-👉 Refer to ```.env.example```
+👉 Refer to ```.env.example```\
 👉 **Never commit** ```.env``` **to GitHub**
 
----
-## ▶️ How to Run Experiments
-Each experiment follows the same basic flow.
+### Step 4: Install python libraries
+```bash
+pip install -r requirements.text
+```
 
-### Step 1: Move into the experiment folder
-```bash
-cd experiments/<experiment-name>
-```
-### Step 2: Install dependencies
-```bash
-pip install -r requirements.txt
-```
-### Step 3: Run the project
-```bash
-python main.py
-```
-**📌 Always check the experiment’s README for exact commands.**
+## ▶️ How to Run A Project
+Each project follows the same basic flow.
 
----
-## 🧪 How to Add a New Experiment
+### Step 1: Move into the project folder
+```bash
+cd ai-text-summarizer-gemini-python
+```
+### Step 2: Run the python application
+```bash
+python gemini-text-summarizer.py
+```
+## 🧪 How to Add a New Project
 Follow this standard structure:
+
 ```text
-experiments/
-└── new-experiment-name/
-    ├── main.py
-    ├── requirements.txt
-    ├── README.md
-    └── assets/ (optional)
+project-name/
+├── app.py
+├── requirements.txt (if any)
+├── README.md
+└── assets/ (optional)
 ```
+⚠️ Use similar file/folder naming convention
+
 Best practices:
 - Focus on one GenAI concept
 - Keep code minimal & readable
@@ -140,7 +195,6 @@ Best practices:
   - what you will learn
   - how to run it
 
----
 ## 🧭 Planned / Example Experiments
 Some experiments you may find or add
 - Study Buddy / Concept Explainer
@@ -156,25 +210,17 @@ Some experiments you may find or add
 - Bug Root Cause Analyzer
 - Teacher for kids (Math/Logic)
 
----
-## 🚀 Who Should Use This Repo?
-- 👨‍💻 Software engineers exploring GenAI
-- 🎓 Beginners learning LLMs
-- 🧠 System designers adding AI to systems
-- 📚 Anyone who prefers learning by building
----
+
 ## ⚠️ Disclaimer
 - LLM APIs may incur cost
 - Outputs may vary due to model randomness
 - This repo is for learning & experimentation only
 
----
-## ⭐ Support
+## Contributing
+💡 If you found this helpful...
+- ⭐ Star the repo
+- 🍴 Fork it
+- 🚀 Build on top of it & submit pull request
+- 📢 Share your AI story platform
 
-If you find this repository useful:
-- Star ⭐ the repo
-- Fork it
-- Modify experiments
-- Build your own labs
-
-**Happy experimenting 🧪🚀**
+**Happy Hacking 🧪🚀**

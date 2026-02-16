@@ -1,0 +1,38 @@
+ALEX R. DEVELOPER
+Python Developer | 2 Years Experience ?? New York, NY | ?? (555) 012-3456
+?? alex.dev@email.com | ?? linkedin.com/in/alexdev | ?? github.com/alexdev
+
+PROFESSIONAL SUMMARY
+Detail-oriented Python Developer with 2 years of experience building and maintaining scalable web applications and automated data pipelines. Proficient in Django and Flask, with a strong focus on writing clean, PEP 8-compliant code and optimizing database performance. Proven track record of improving system efficiency by 30% through automation.
+
+TECHNICAL SKILLS
+* Languages: Python (Advanced), SQL, JavaScript (ES6+), HTML5/CSS3.
+* Frameworks: Django, FastAPI, Flask, Celery.
+* Databases: PostgreSQL, MySQL, Redis, MongoDB.
+* Tools & DevOps: Git, Docker, AWS (EC2, S3), Jenkins, Nginx.
+* Testing: PyTest, Unittest.
+
+PROFESSIONAL EXPERIENCE
+Junior Python Developer | TechStream Solutions Jan 2024 – Present
+* Developed and deployed 10+ RESTful APIs using FastAPI and Django REST Framework, reducing frontend-backend latency by 15%.
+* Refactored legacy data processing scripts, resulting in a 40% increase in execution speed.
+* Collaborated with the DevOps team to containerize microservices using Docker, streamlining the CI/CD pipeline.
+* Optimized PostgreSQL queries and implemented Redis caching, significantly improving application response times during peak traffic.
+Associate Developer (Internship to Full-time) | Innovate AI June 2022 – Dec 2023
+* Automated weekly financial reporting using Pandas and Openpyxl, saving the accounting department 10 manual hours per week.
+* Maintained and debugged a customer-facing Flask application, resolving 50+ high-priority tickets.
+* Assisted in the migration of on-premise data to AWS S3, ensuring 100% data integrity.
+
+KEY PROJECTS
+Real-Time Task Orchestrator * Built a distributed task queue system using Python, Celery, and RabbitMQ.
+* Implemented a dashboard using WebSocket for real-time monitoring of task statuses.
+E-Commerce Price Tracker * Developed a web scraper using BeautifulSoup and Selenium to track price fluctuations across five major retail sites.
+* Set up automated email alerts using SMTP protocols.
+
+EDUCATION
+Bachelor of Science in Computer Science State University of Technology | Graduated 2022
+
+CERTIFICATIONS
+* PCAP: Certified Associate in Python Programming
+* AWS Certified Cloud Practitioner
+

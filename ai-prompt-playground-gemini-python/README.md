@@ -267,7 +267,6 @@ Apps spring to life! 🚀
   - Output consistency checks
 
 ## 🐛 Troubleshooting
-## 🐛 Troubleshooting
 
 ### Common Errors and Solutions
 

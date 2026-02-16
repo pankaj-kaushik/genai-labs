@@ -16,39 +16,26 @@ Perfect for beginners learning AI integration, Prompt Engineering, and building 
 
 ## 🚀 What This Project Does
 - Reads meeting transcript from a file automatically
-- Generates three distinct note formats from the same content
-- Demonstrates how **prompt variations → output variations**
+- Generates **structured meeting notes in JSON format** with comprehensive information extraction
+- Extracts **meeting title, date, participants, key points, action items, and decisions**
 - Handles errors gracefully with robust exception handling
-- Provides a clean CLI interface for easy use
-- Uses Google's Gemini LLM for high-quality note generation
+- Provides a clean CLI interface with progress feedback
+- Uses Google's **Gemini 3 Flash Preview** model for fast, accurate note generation
+- Implements **smart JSON parsing** to handle various response formats
 
-The tool generates three powerful output types:
-
-### 📍 Key Discussion Points
-- Extracts **5 main discussion points** from the meeting
-- Ideal for **quick reference** and sharing
-- Maintains essential information in scannable format
-
-### ✅ Action Items
-- Lists **clear, actionable tasks** assigned during the meeting
-- Perfect for **follow-up** and accountability
-- Helps teams stay organized
-
-### 📄 Executive Summary
-- Provides a **concise professional overview** of the meeting
-- Captures main themes, decisions, and next steps
-- Ideal for **stakeholders** and absent participants
 
 ## 🎯 Learning Outcomes
 After completing this project, you will understand:
-- 🔌 How to integrate **Gemini LLM APIs** using Python
-- 📝 How **prompt design** affects LLM outputs
-- 🎯 How to implement **Zero-Shot prompting** techniques
-- 🔄 How to handle **file I/O** operations in Python
-- ⚠️ How to implement **error handling** for API calls
-- 🏗️ How to structure **modular, reusable code**
-- 🔐 How to manage **API keys** securely with environment variables
-- 🧪 **Comparative prompt experimentation** methodologies
+- 🔌 How to integrate **Google Gemini API** using the official Python SDK
+- 📝 How to design **structured output prompts** for consistent JSON responses
+- 🎯 How to implement **Zero-Shot information extraction** techniques
+- 🔄 How to handle **file I/O** operations with both relative and absolute paths
+- ⚠️ How to implement **comprehensive error handling** with specific exception types
+- 🏗️ How to structure **modular, well-documented code** with type hints
+- 🔐 How to manage **API keys** securely using environment variables and dotenv
+- 🧹 How to implement **response post-processing** to handle various LLM output formats
+- ✅ How to add **input validation** for robust error prevention
+- 📊 How to extract **multiple information categories** from unstructured text
 
 This project strengthens both **AI integration** skills and **practical software development** best practices.
 
@@ -76,20 +63,23 @@ This project strengthens both **AI integration** skills and **practical software
 
 ## 🧩 Architecture & Sequence Flow
 ```text
-User -> CLI Interface -> File Reader -> Transcript Loader -> Prompt Builder (3 types) -> Gemini LLM API -> Response Processor -> Formatted Output Display
+User -> CLI Interface -> API Client Initialization -> File Reader -> Prompt Builder -> Gemini API -> JSON Parser -> Structured Output Display
 ```
 **Detailed Flow:**
-1. Application starts - User launches the CLI application.
-2. File reading - System reads text from `meeting_transcript.txt`.
-3. Prompt construction - Three distinct prompts are prepared:
-    - Key discussion points prompt
-    - Action items prompt
-    - Executive summary prompt
-4. API client initialization - Gemini client is created using the API key from environment variables.
-5. Sequential generation - Each prompt is sent to the Gemini API for note generation.
-6. Response processing - API responses are parsed and formatted for display.
-7. Error handling - Handles missing files, API key errors, connection issues, and timeouts gracefully.
-8. Output display - Results are printed to the console in clearly labeled sections.
+1. **Application Start** - User launches the CLI application with welcome message
+2. **API Client Initialization** - Validates GEMINI_API_KEY and creates GenAI client
+3. **File Reading** - Reads transcript from `meeting_transcript.txt` (supports relative/absolute paths)
+4. **Input Validation** - Checks if transcript text is non-empty
+5. **Prompt Construction** - Combines template with transcript using structured output format
+6. **API Call** - Sends request to Gemini 3 Flash Preview model
+7. **Response Validation** - Checks for empty responses
+8. **JSON Extraction** - Strips markdown code blocks and parses JSON
+9. **Error Handling** - Catches and handles:
+    - Missing API key (ValueError)
+    - File not found (FileNotFoundError)
+    - Invalid JSON (JSONDecodeError)
+    - API errors (Exception)
+10. **Output Display** - Prints formatted JSON with success/error indicators
 
 ## ▶️ How to Run the Project
 ### Step 1: Update `meeting_transcript.txt` File
@@ -258,35 +248,63 @@ Common Issues:
 
 **API Key Error:**
 ```python
-Error: GEMINI_API_KEY not found
-Solution: Create .env file with your API key
+❌ Error: GEMINI_API_KEY environment variable is not set. Please set it in your .env file or environment.
+Solution: Create .env file with GEMINI_API_KEY=your_api_key_here
 ```
 **File Not Found:**
 ```python
-Error: Could not find input file
-Solution: Ensure meeting_transcript.txt exists in the project directory
+❌ Error: Could not find input file at: /path/to/meeting_transcript.txt
+Solution: Ensure meeting_transcript.txt exists in the same directory as the script
 ```
-**Connection Error:**
+**Empty Transcript Error:**
 ```python
-Error: Connection error while calling Gemini API
-Solution: Check your internet connection and API status
+❌ Error: Meeting transcript text cannot be empty
+Solution: Add content to meeting_transcript.txt file
 ```
-**Timeout Error:**
+**JSON Parsing Error:**
 ```python
-Error: Request timed out
-Solution: Try again or check API service status
+⚠️  Warning: An error occurred during processing.
+"error": "Failed to parse JSON response: ..."
+Solution: Check the raw_response field in output for debugging, or try running again
+```
+**API Request Failed:**
+```python
+❌ Error: API request failed: ...
+Solution: Check your internet connection, API key validity, and Gemini API status
+```
+**Client Initialization Error:**
+```python
+❌ Error: Failed to initialize GenAI client: ...
+Solution: Verify your API key is valid and you have proper internet connectivity
 ```
 
 ## 📝 Configuration Tips
-Prompt Design Guidelines:
-- **Be specific:** Clearly state the desired output format
-- **Set constraints:** Define length, style, or structure requirements
-- **Use action verbs:** "Extract", "List", "Summarize"
-- **Test variations:** Experiment with different phrasings
 
-Model Selection:
-- **gemini-3-flash-preview:** Fast, cost-effective for note generation
-- Consider other models for specialized needs
+### Prompt Design Guidelines:
+- **Be specific:** The current prompt explicitly defines the JSON structure
+- **Use action verbs:** "Extract" is used to clearly indicate the task
+- **Provide schema:** Include the exact JSON format expected
+- **Test variations:** Modify `EXTRACT_INFO_PROMPT` in the code to experiment
+
+### Model Selection:
+- **gemini-3-flash-preview:** Currently configured - fast and cost-effective
+- To change model: Update `TARGET_MODEL` constant in the code
+- Alternative options: gemini-2.0-flash-exp, gemini-1.5-pro
+
+### File Path Configuration:
+- **Relative paths:** Script automatically resolves paths relative to its directory
+- **Absolute paths:** Also supported for flexibility
+- To change input file: Update `TARGET_FILE` constant
+
+### Environment Variables:
+- **Required:** `GEMINI_API_KEY` must be set in `.env` file or system environment
+- **Optional:** Add other configuration variables as needed
+- **Security:** Never commit `.env` file to version control
+
+### Error Handling Customization:
+- All functions raise specific exception types for precise error handling
+- Main function catches and displays user-friendly error messages
+- Modify exception handling in `main()` for custom behavior
 
 ## Contributing
 💡 If you found this helpful...
